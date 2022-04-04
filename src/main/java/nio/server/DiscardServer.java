@@ -1,4 +1,4 @@
-package nio.example;
+package nio.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -52,7 +52,7 @@ public class DiscardServer {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         } else {
-            port = 8080;
+            port = 6666;
         }
         new DiscardServer(port).run();
     }

@@ -8,15 +8,19 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 丢弃任何进入的数据
  */
-public class DiscardServer {
+public class MyServer {
+
+    private static final Logger logger = LoggerFactory.getLogger("InfoLogger");
 
     private int port;
 
-    public DiscardServer(int port) {
+    public MyServer(int port) {
         this.port = port;
     }
 
@@ -30,7 +34,7 @@ public class DiscardServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DiscardServerHandler());
+                            ch.pipeline().addLast(new NioServerHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -38,7 +42,7 @@ public class DiscardServer {
 
             // 绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync();
-
+            logger.info("Server started on port {}", port);
             // 等待服务器  socket 关闭 。
             f.channel().closeFuture().sync();
         } finally {
@@ -54,6 +58,6 @@ public class DiscardServer {
         } else {
             port = 6666;
         }
-        new DiscardServer(port).run();
+        new MyServer(port).run();
     }
 }

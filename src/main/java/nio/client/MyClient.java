@@ -6,8 +6,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyClient {
+    public static final Logger logger = LoggerFactory.getLogger("InfoLogger");
+    private static final String HOST = "127.0.0.1";
+    private static final int PORT = 6666;
     public static void main(String[] args) throws Exception {
         NioEventLoopGroup eventExecutors = new NioEventLoopGroup();
         try {
@@ -22,12 +27,12 @@ public class MyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //添加客户端通道的处理器
-                            ch.pipeline().addLast(new MyClientHandler());
+                            ch.pipeline().addLast(new NioClientHandler());
                         }
                     });
-            System.out.println("客户端准备就绪");
+            logger.info("客户端启动");
             //连接服务端
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 6666).sync();
+            ChannelFuture channelFuture = bootstrap.connect(HOST, PORT).sync();
             //对通道关闭进行监听
             channelFuture.channel().closeFuture().sync();
         } finally {

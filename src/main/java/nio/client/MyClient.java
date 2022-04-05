@@ -30,9 +30,9 @@ public class MyClient {
                             ch.pipeline().addLast(new NioClientHandler());
                         }
                     });
-            logger.info("客户端启动");
             //连接服务端
             ChannelFuture channelFuture = bootstrap.connect(HOST, PORT).sync();
+            logger.info("client start connect server");
             //对通道关闭进行监听
             channelFuture.channel().closeFuture().sync();
         } finally {

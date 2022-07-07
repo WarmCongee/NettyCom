@@ -43,7 +43,7 @@ public class MyServer {
             // 绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync();
             logger.info("Server started on port {}", port);
-            // 等待服务器  socket 关闭 。
+            // 等待服务器  socket 关闭
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
